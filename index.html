@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+/* ==================== RESET & ROOT ==================== */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --t:#1DDBB8;--t2:#0FAA8E;--t3:#E0FAF5;
@@ -30,7 +31,7 @@ body:hover #cursor{opacity:1}
 ::-webkit-scrollbar-track{background:var(--navy)}
 ::-webkit-scrollbar-thumb{background:var(--t);border-radius:3px}
 
-/* PROGRESS */
+/* PROGRESS BAR */
 #prog{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--t),var(--b),var(--t));z-index:10000;width:0%;transition:width .06s linear;box-shadow:0 0 8px var(--t)}
 
 /* ==================== NAVBAR ==================== */
@@ -38,7 +39,8 @@ nav{position:fixed;top:0;inset-inline:0;z-index:800;padding:22px 0;transition:.5
 nav.s{background:rgba(3,14,28,.85);backdrop-filter:blur(24px) saturate(1.8);padding:14px 0;border-bottom:1px solid rgba(29,219,184,.08)}
 .nc{max-width:1380px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:32px}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo-ico{width:44px;height:44px;background:#ffffff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 0 20px rgba(36, 204, 176, 0.425)}.logo-txt{font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#fff,var(--t));-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo-ico{width:44px;height:44px;background:#ffffff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 0 20px rgba(36,204,176,0.425)}
+.logo-txt{font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#fff,var(--t));-webkit-background-clip:text;background-clip:text;color:transparent}
 .nl{display:flex;gap:32px}
 .nl a{text-decoration:none;font-size:.85rem;font-weight:600;color:rgba(255,255,255,.55);transition:.25s;letter-spacing:.01em}
 .nl a:hover{color:var(--t);text-shadow:0 0 16px rgba(29,219,184,.6)}
@@ -127,8 +129,6 @@ nav.s{background:rgba(3,14,28,.85);backdrop-filter:blur(24px) saturate(1.8);padd
 .pc:hover .pc-glow{width:180px;opacity:.8}
 .pc-img{max-width:70%;max-height:70%;object-fit:contain;position:relative;z-index:1;transition:.5s var(--ease);filter:drop-shadow(0 10px 24px rgba(0,0,0,.4))}
 .pc:hover .pc-img{transform:scale(1.1) translateY(-6px);filter:drop-shadow(0 20px 40px rgba(29,219,184,.3))}
-.pc-ico{font-size:5rem;transition:.5s var(--ease);filter:drop-shadow(0 8px 20px rgba(0,0,0,.4))}
-.pc:hover .pc-ico{transform:scale(1.15) translateY(-8px)}
 .pc-shine{position:absolute;top:-50%;left:-80%;width:60%;height:200%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.18),transparent);transform:skewX(-20deg);transition:.7s var(--ease);z-index:2;pointer-events:none}
 .pc:hover .pc-shine{left:140%}
 .pc-body{padding:22px;position:relative;z-index:1}
@@ -238,19 +238,398 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
 .bsend{width:100%;padding:15px;border-radius:50px;background:#25D366;color:#fff;font-weight:900;font-size:.95rem;border:none;cursor:none;transition:.3s var(--ease);font-family:inherit;box-shadow:0 8px 24px rgba(37,211,102,.25)}
 .bsend:hover{background:#1DAA54;box-shadow:0 12px 36px rgba(37,211,102,.45);transform:translateY(-2px)}
 
-/* REVEAL */
+/* ==================== REVEAL ==================== */
 .rv{opacity:0;transform:translateY(36px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 .rv.vis{opacity:1;transform:none}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-/* RIPPLE */
+/* ==================== RIPPLE ==================== */
 .ripple{position:absolute;border-radius:50%;background:rgba(29,219,184,.3);width:4px;height:4px;transform:scale(0);animation:ripple-anim .6s linear;pointer-events:none}
 @keyframes ripple-anim{to{transform:scale(40);opacity:0}}
 
+
+/* ================================================================
+   ==================== سلة المشتريات — BEM ====================
+   ================================================================ */
+
+/* --- زر السلة العائم (FAB) --- */
+/* يظهر عند التمرير 400px ويختفي في أعلى الصفحة */
+.cart-fab{
+  position:fixed;
+  bottom:96px; /* فوق زر الواتساب الموجود لتجنب التداخل */
+  left:28px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--t),var(--b));
+  border:none;
+  color:#fff;
+  font-size:1.4rem;
+  cursor:none;
+  z-index:500;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 24px rgba(29,219,184,.35);
+  transition:transform .4s var(--ease),box-shadow .3s var(--ease),opacity .4s var(--ease2);
+  opacity:0;
+  transform:scale(0) translateY(20px);
+}
+/* حالة الظهور عند التمرير */
+.cart-fab.cart-fab--visible{
+  opacity:1;
+  transform:scale(1) translateY(0);
+}
+.cart-fab:hover{
+  transform:scale(1.12) translateY(0) !important;
+  box-shadow:0 12px 36px rgba(29,219,184,.55);
+}
+
+/* --- شارة عدد المنتجات فوق زر السلة --- */
+.cart-fab__badge{
+  position:absolute;
+  top:-4px;
+  right:-4px;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  border-radius:50px;
+  background:#FF4757;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:900;
+  font-family:'Cairo',sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid var(--navy);
+  transition:transform .25s var(--ease);
+  line-height:1;
+}
+/* تأثير القفز عند إضافة منتج */
+.cart-fab__badge--bump{
+  animation:badge-bump .3s var(--ease);
+}
+@keyframes badge-bump{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.6)}
+  100%{transform:scale(1)}
+}
+
+/* --- طبقة التعتيم الخلفية للنافذة --- */
+.cart-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(8px);
+  z-index:850;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .35s var(--ease);
+}
+.cart-overlay--visible{
+  opacity:1;
+  pointer-events:all;
+}
+
+/* --- نافذة السلة المنبثقة (Modal) تظهر من الأسفل --- */
+.cart-modal{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  max-width:540px;
+  margin:0 auto;
+  max-height:88vh;
+  background:rgba(5,15,30,.98);
+  backdrop-filter:blur(28px);
+  border:1px solid rgba(29,219,184,.15);
+  border-bottom:none;
+  border-radius:28px 28px 0 0;
+  z-index:900;
+  display:flex;
+  flex-direction:column;
+  padding:0;
+  /* الحالة المخفية الافتراضية — Slide Down */
+  transform:translateY(105%);
+  opacity:0;
+  transition:transform .45s var(--ease2),opacity .35s var(--ease);
+  outline:none;
+}
+/* حالة الظهور مع Slide Up */
+.cart-modal--open{
+  transform:translateY(0);
+  opacity:1;
+}
+
+/* --- مقبض الإغلاق العلوي (Drag Handle) --- */
+.cart-modal__handle{
+  width:40px;
+  height:4px;
+  border-radius:4px;
+  background:rgba(255,255,255,.12);
+  margin:12px auto 0;
+  flex-shrink:0;
+}
+
+/* --- رأس النافذة --- */
+.cart-modal__header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 24px 16px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  flex-shrink:0;
+}
+.cart-modal__title{
+  font-size:1.1rem;
+  font-weight:900;
+  background:linear-gradient(135deg,#fff,var(--t));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  margin:0;
+}
+.cart-modal__close{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:rgba(255,255,255,.5);
+  font-size:1rem;
+  cursor:none;
+  transition:background .2s,color .2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:inherit;
+  line-height:1;
+}
+.cart-modal__close:hover{
+  background:rgba(255,255,255,.12);
+  color:#fff;
+}
+
+/* --- جسم النافذة القابل للتمرير --- */
+.cart-modal__body{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 24px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--t) transparent;
+}
+
+/* --- حالة السلة الفارغة (Empty State) --- */
+.cart-modal__empty{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:48px 0 40px;
+  gap:12px;
+  text-align:center;
+}
+.cart-modal__empty-icon{
+  font-size:3.5rem;
+  opacity:.35;
+  display:block;
+}
+.cart-modal__empty-text{
+  font-size:1rem;
+  font-weight:800;
+  color:rgba(255,255,255,.5);
+}
+.cart-modal__empty-sub{
+  font-size:.82rem;
+  font-family:'IBM Plex Sans Arabic',sans-serif;
+  color:rgba(255,255,255,.28);
+  line-height:1.65;
+  max-width:240px;
+}
+
+/* --- عنصر منتج داخل السلة --- */
+.cart-modal__item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  /* حركة دخول المنتج للسلة */
+  animation:item-enter .3s var(--ease2) both;
+}
+@keyframes item-enter{
+  from{opacity:0;transform:translateX(-14px)}
+  to{opacity:1;transform:none}
+}
+.cart-modal__item:last-child{border-bottom:none}
+
+/* اسم المنتج */
+.cart-modal__item-name{
+  flex:1;
+  font-size:.87rem;
+  font-weight:700;
+  color:rgba(255,255,255,.85);
+  line-height:1.35;
+}
+
+/* المجموع الفرعي للمنتج */
+.cart-modal__item-subtotal{
+  font-size:.84rem;
+  font-weight:900;
+  color:var(--t);
+  white-space:nowrap;
+  min-width:70px;
+  text-align:left;
+}
+
+/* مجموعة أزرار التحكم في الكمية */
+.cart-modal__item-controls{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-shrink:0;
+}
+.cart-modal__item-qty{
+  font-size:.88rem;
+  font-weight:900;
+  color:#fff;
+  min-width:22px;
+  text-align:center;
+}
+
+/* أزرار +/- والحذف */
+.cart-modal__btn{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  color:rgba(255,255,255,.6);
+  font-size:.9rem;
+  cursor:none;
+  transition:background .2s,color .2s,border-color .2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:inherit;
+  line-height:1;
+  padding:0;
+}
+.cart-modal__btn:hover{
+  background:rgba(29,219,184,.15);
+  border-color:rgba(29,219,184,.4);
+  color:var(--t);
+}
+/* زر الحذف — ألوان تحذيرية */
+.cart-modal__btn--remove{
+  border-color:rgba(255,71,87,.2);
+  color:rgba(255,71,87,.45);
+  font-size:.8rem;
+}
+.cart-modal__btn--remove:hover{
+  background:rgba(255,71,87,.1);
+  border-color:rgba(255,71,87,.5);
+  color:#FF4757;
+}
+
+/* --- تذييل السلة (المجموع + زر الطلب) --- */
+.cart-modal__footer{
+  padding:14px 24px 28px;
+  border-top:1px solid rgba(255,255,255,.06);
+  flex-shrink:0;
+}
+/* صندوق عرض المجموع الإجمالي */
+.cart-modal__total{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+  padding:12px 16px;
+  background:linear-gradient(135deg,rgba(29,219,184,.07),rgba(10,109,201,.04));
+  border:1px solid rgba(29,219,184,.12);
+  border-radius:14px;
+}
+.cart-modal__total-label{
+  font-size:.8rem;
+  font-weight:700;
+  color:rgba(255,255,255,.4);
+}
+.cart-modal__total-amount{
+  font-size:1.4rem;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--t),#fff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+/* زر إتمام الطلب عبر الواتساب */
+.cart-modal__checkout{
+  width:100%;
+  padding:14px;
+  border-radius:50px;
+  font-size:.95rem;
+  font-weight:900;
+  font-family:'Cairo',sans-serif;
+  cursor:none;
+  transition:background .25s,box-shadow .25s,transform .25s var(--ease),opacity .2s;
+  border:none;
+}
+.cart-modal__checkout:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+  pointer-events:none;
+}
+
+/* --- إشعار التأكيد (Toast Notification) --- */
+/* حاوية الإشعارات — تتراكم رأسياً */
+.cart-toasts{
+  position:fixed;
+  bottom:180px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  z-index:9999;
+  pointer-events:none;
+  align-items:center;
+  width:max-content;
+  max-width:90vw;
+}
+.cart-toast{
+  background:rgba(3,14,28,.96);
+  border:1px solid rgba(29,219,184,.28);
+  border-radius:50px;
+  padding:10px 22px;
+  color:#fff;
+  font-size:.84rem;
+  font-weight:700;
+  font-family:'Cairo',sans-serif;
+  white-space:nowrap;
+  backdrop-filter:blur(20px);
+  box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 0 1px rgba(29,219,184,.06);
+  animation:toast-in .35s var(--ease2) both;
+}
+.cart-toast--out{
+  animation:toast-out .3s var(--ease) forwards;
+}
+@keyframes toast-in{
+  from{opacity:0;transform:translateY(18px) scale(.92)}
+  to{opacity:1;transform:none}
+}
+@keyframes toast-out{
+  from{opacity:1;transform:none}
+  to{opacity:0;transform:translateY(-10px) scale(.92)}
+}
+
+/* ==================== RESPONSIVE ==================== */
 @media(max-width:600px){
   .container,.nc,.filter-inner,.fg,.fb{padding-left:20px;padding-right:20px}
   .pgrid{grid-template-columns:1fr}
   .hero h1{font-size:2.5rem}
+  .cart-fab{bottom:100px;left:20px}
+  .cart-modal{max-height:92vh}
 }
 </style>
 </head>
@@ -264,9 +643,10 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
 <nav id="nav">
   <div class="nc">
     <a href="#" class="logo">
-<div class="logo-ico">
-    <img src="https://i.postimg.cc/c40p0S4L/Whats-App-Image-2026-05-06-at-11-20.png" alt="لوجو الموقع" style="width: 50px; height: auto;">
-</div>      <span class="logo-txt">ميغا كلين</span>
+      <div class="logo-ico">
+        <img src="https://i.postimg.cc/c40p0S4L/Whats-App-Image-2026-05-06-at-11-20.png" alt="لوجو الموقع" style="width:50px;height:auto;">
+      </div>
+      <span class="logo-txt">ميغا كلين</span>
     </a>
     <div class="nl">
       <a href="#products">المنتجات</a>
@@ -277,7 +657,7 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
     </div>
     <div class="nb">
       <button class="btn btn-ghost" onclick="openD()">اطلب الآن</button>
-      <button class="btn btn-t" onclick="openD()">🛍️ طلب سريع</button>
+      <button class="btn btn-t" onclick="openCart()">🛒 السلة</button>
     </div>
     <button class="ham" id="ham"><span></span><span></span><span></span></button>
   </div>
@@ -306,30 +686,30 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
     <p class="hero-desc">حلول تنظيف احترافية تجمع بين الأداء الفائق، الانتعاش، والتعقيم في كل قطرة — مصنوعة بأيدي جزائرية وبمعايير عالمية.</p>
     <div class="hero-btns">
       <a href="#products" class="btn btn-t" style="padding:14px 36px;font-size:.92rem">اكتشف المنتجات ←</a>
-      <button class="btn btn-ghost" onclick="openD()">اطلب الآن</button>
+      <button class="btn btn-ghost" onclick="openD()">طلب سريع</button>
       <a href="#contact" class="btn btn-ghost">تواصل معنا</a>
     </div>
     <div class="hero-prods">
-<div class="hprod">
-    <img class="hprod-img" src="https://i.postimg.cc/PqzvxZPb/ISIS-PNG.png" style="width: 150px; height: auto;">
-    <div class="hprod-glow"></div>
-    <span>باور واش ليمون</span>
-</div>
-<div class="hprod">
-    <img class="hprod-img" src="https://i.postimg.cc/MTQ4V6J1/VERT-PNG.png" style="width: 150px; height: auto;">
-    <div class="hprod-glow"></div>
-    <span>عطـر فلورال</span>
-</div>
-<div class="hprod">
-    <img class="hprod-img" src="https://i.postimg.cc/dDPJrHf3/MEGA-BL-PNG.png" style="width: 150px; height: auto;">
-    <div class="hprod-glow"></div>
-    <span>عطـر فريشور</span>
-</div>
-<div class="hprod">
-    <img class="hprod-img" src="https://i.postimg.cc/3x2dSpjV/ROSE-PNG.png" style="width: 150px; height: auto;">
-    <div class="hprod-glow"></div>
-    <span>متعدد الأزهار</span>
-</div>
+      <div class="hprod">
+        <img class="hprod-img" src="https://i.postimg.cc/PqzvxZPb/ISIS-PNG.png" style="width:150px;height:auto;">
+        <div class="hprod-glow"></div>
+        <span>باور واش ليمون</span>
+      </div>
+      <div class="hprod">
+        <img class="hprod-img" src="https://i.postimg.cc/MTQ4V6J1/VERT-PNG.png" style="width:150px;height:auto;">
+        <div class="hprod-glow"></div>
+        <span>عطـر فلورال</span>
+      </div>
+      <div class="hprod">
+        <img class="hprod-img" src="https://i.postimg.cc/dDPJrHf3/MEGA-BL-PNG.png" style="width:150px;height:auto;">
+        <div class="hprod-glow"></div>
+        <span>عطـر فريشور</span>
+      </div>
+      <div class="hprod">
+        <img class="hprod-img" src="https://i.postimg.cc/3x2dSpjV/ROSE-PNG.png" style="width:150px;height:auto;">
+        <div class="hprod-glow"></div>
+        <span>متعدد الأزهار</span>
+      </div>
     </div>
   </div>
   <div class="hero-scroll"><div class="scroll-line"></div><span>مرر للأسفل</span></div>
@@ -364,63 +744,63 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
     <div class="pgrid">
 
       <div class="pc rv" data-c="dish" data-n="باور واش ليمون 630مل" data-p="450">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/PqzvxZPb/ISIS-PNG.png="></div>
-        <div class="pc-body"><span class="pc-cat cat-d">🍽️ أطباق</span><div class="pc-title">باور واش ليمون</div><p class="pc-desc">تركيبة 3في1 ثورية: تنظيف عميق، تعقيم، وعطر ليمون منعش يدوم طوال اليوم.</p><div class="pc-badges"><span class="badge">🍋 ليمون</span><span class="badge">630 مل</span><span class="badge">3في1</span></div><div class="pc-footer"><span class="pc-price">450 دج</span><button class="pc-btn" onclick="selProd('باور واش ليمون 630مل',450)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/PqzvxZPb/ISIS-PNG.png" alt="باور واش ليمون"></div>
+        <div class="pc-body"><span class="pc-cat cat-d">🍽️ أطباق</span><div class="pc-title">باور واش ليمون</div><p class="pc-desc">تركيبة 3في1 ثورية: تنظيف عميق، تعقيم، وعطر ليمون منعش يدوم طوال اليوم.</p><div class="pc-badges"><span class="badge">🍋 ليمون</span><span class="badge">630 مل</span><span class="badge">3في1</span></div><div class="pc-footer"><span class="pc-price">450 دج</span><button class="pc-btn" onclick="addToCart('باور واش ليمون 630مل',450)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv d1" data-c="dish" data-n="باور واش تفاح أخضر" data-p="450">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/FRCtgWYK/ISIS-VERT-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-d">🍽️ أطباق</span><div class="pc-title">باور واش تفاح أخضر</div><p class="pc-desc">قوة تفاح الجبال في إزالة أصعب الدهون. لمعان فائق مع رائحة خضراء منعشة.</p><div class="pc-badges"><span class="badge">🍏 تفاح</span><span class="badge">630 مل</span><span class="badge">3في1</span></div><div class="pc-footer"><span class="pc-price">450 دج</span><button class="pc-btn" onclick="selProd('باور واش تفاح أخضر',450)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/FRCtgWYK/ISIS-VERT-PNG.png" alt="باور واش تفاح"></div>
+        <div class="pc-body"><span class="pc-cat cat-d">🍽️ أطباق</span><div class="pc-title">باور واش تفاح أخضر</div><p class="pc-desc">قوة تفاح الجبال في إزالة أصعب الدهون. لمعان فائق مع رائحة خضراء منعشة.</p><div class="pc-badges"><span class="badge">🍏 تفاح</span><span class="badge">630 مل</span><span class="badge">3في1</span></div><div class="pc-footer"><span class="pc-price">450 دج</span><button class="pc-btn" onclick="addToCart('باور واش تفاح أخضر',450)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv d2" data-c="dish" data-n="دوري نيت ليمون 5 لتر" data-p="1200">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/KjgZKS0F/DORI-NET-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-d">🍽️ أطباق</span><div class="pc-title">دوري نيت ليمون</div><p class="pc-desc">الخيار الاقتصادي الذكي. مركز قوي للاستعمال العائلي والمهني مع تنظيف فائق.</p><div class="pc-badges"><span class="badge">🍋 ليمون</span><span class="badge">5 لتر</span><span class="badge">اقتصادي</span></div><div class="pc-footer"><span class="pc-price">1200 دج</span><button class="pc-btn" onclick="selProd('دوري نيت ليمون 5 لتر',1200)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/KjgZKS0F/DORI-NET-PNG.png" alt="دوري نيت"></div>
+        <div class="pc-body"><span class="pc-cat cat-d">🍽️ أطباق</span><div class="pc-title">دوري نيت ليمون</div><p class="pc-desc">الخيار الاقتصادي الذكي. مركز قوي للاستعمال العائلي والمهني مع تنظيف فائق.</p><div class="pc-badges"><span class="badge">🍋 ليمون</span><span class="badge">5 لتر</span><span class="badge">اقتصادي</span></div><div class="pc-footer"><span class="pc-price">1200 دج</span><button class="pc-btn" onclick="addToCart('دوري نيت ليمون 5 لتر',1200)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv d1" data-c="dish" data-n="سائل أواني برتقال 1 لتر" data-p="350">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/KzzwzPJV/MEGA-CL-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-d">🍽️ أطباق</span><div class="pc-title">سائل الأواني برتقال — 1 لتر</div><p class="pc-desc">عطر البرتقال المنعش مع لمعان فائق. مثالي للاستعمال اليومي بأسعار في المتناول.</p><div class="pc-badges"><span class="badge">🍊 برتقال</span><span class="badge">1 لتر</span></div><div class="pc-footer"><span class="pc-price">350 دج</span><button class="pc-btn" onclick="selProd('سائل أواني برتقال 1 لتر',350)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/KzzwzPJV/MEGA-CL-PNG.png" alt="سائل أواني برتقال"></div>
+        <div class="pc-body"><span class="pc-cat cat-d">🍽️ أطباق</span><div class="pc-title">سائل الأواني برتقال — 1 لتر</div><p class="pc-desc">عطر البرتقال المنعش مع لمعان فائق. مثالي للاستعمال اليومي بأسعار في المتناول.</p><div class="pc-badges"><span class="badge">🍊 برتقال</span><span class="badge">1 لتر</span></div><div class="pc-footer"><span class="pc-price">350 دج</span><button class="pc-btn" onclick="addToCart('سائل أواني برتقال 1 لتر',350)">🛒 أضف للسلة</button></div></div>
       </div>
 
-      <div class="pc rv d2" data-c="dish" data-n="غسيل ملابس عطر فلورال" data-p="1400">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/MTQ4V6J1/VERT-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-d">👕 ملابس</span><div class="pc-title">غسيل ملابس عطر فلورال</div><p class="pc-desc">للمطاعم والمطابخ الكبيرة. قوة تنظيف استثنائية تزيل أصعب الدهون المتراكمة.</p><div class="pc-badges"><span class="badge">10 لتر</span><span class="badge">تركـيبة ممتازة</span><span class="badge">تركيبة قوية</span></div><div class="pc-footer"><span class="pc-price">1400 دج</span><button class="pc-btn" onclick="selProd('غسيل ملابس عطر فلورال 5 لتر',1400)">اطلب الآن</button></div></div>
+      <div class="pc rv d2" data-c="dish" data-n="غسيل ملابس عطر فلورال 5 لتر" data-p="1400">
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/MTQ4V6J1/VERT-PNG.png" alt="غسيل ملابس فلورال"></div>
+        <div class="pc-body"><span class="pc-cat cat-d">👕 ملابس</span><div class="pc-title">غسيل ملابس عطر فلورال</div><p class="pc-desc">للمطاعم والمطابخ الكبيرة. قوة تنظيف استثنائية تزيل أصعب الدهون المتراكمة.</p><div class="pc-badges"><span class="badge">10 لتر</span><span class="badge">تركيبة ممتازة</span></div><div class="pc-footer"><span class="pc-price">1400 دج</span><button class="pc-btn" onclick="addToCart('غسيل ملابس عطر فلورال 5 لتر',1400)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv" data-c="laundry" data-n="صابون مرسيليا 10 لتر" data-p="2200">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/yx3GhVqF/SAV-MAR-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">صابون مرسيليا  </div><p class="pc-desc">سر النعومة الأصيل. تركيبة مستوحاة من صابون مرسيليا التقليدي لنظافة عميقة وعطر راقٍ.</p><div class="pc-badges"><span class="badge">10 لتر</span><span class="badge">مرسيليا</span></div><div class="pc-footer"><span class="pc-price">2200 دج</span><button class="pc-btn" onclick="selProd('صابون مرسيليا 10 لتر',2200)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/yx3GhVqF/SAV-MAR-PNG.png" alt="صابون مرسيليا"></div>
+        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">صابون مرسيليا</div><p class="pc-desc">سر النعومة الأصيل. تركيبة مستوحاة من صابون مرسيليا التقليدي لنظافة عميقة وعطر راقٍ.</p><div class="pc-badges"><span class="badge">10 لتر</span><span class="badge">مرسيليا</span></div><div class="pc-footer"><span class="pc-price">2200 دج</span><button class="pc-btn" onclick="addToCart('صابون مرسيليا 10 لتر',2200)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv d1" data-c="laundry" data-n="غسيل الملابس متعدد الأزهار 10 لتر" data-p="1800">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/3x2dSpjV/ROSE-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">غسيل الملابس متعددالأزهار</div><p class="pc-desc">عطر الخزامى المهدئ ينساب في كل خيط من ملابسك. نقاء عميق وانتعاش يدوم ليلة كاملة.</p><div class="pc-badges"><span class="badge">متعدد الأزهار🌺 </span><span class="badge">10 لتر</span></div><div class="pc-footer"><span class="pc-price">1800 دج</span><button class="pc-btn" onclick="selProd('غسيل الملابس متعدد الأزهار 10 لتر',1800)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/3x2dSpjV/ROSE-PNG.png" alt="متعدد الأزهار"></div>
+        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">غسيل الملابس متعدد الأزهار</div><p class="pc-desc">عطر الخزامى المهدئ ينساب في كل خيط من ملابسك. نقاء عميق وانتعاش يدوم ليلة كاملة.</p><div class="pc-badges"><span class="badge">🌺 متعدد الأزهار</span><span class="badge">10 لتر</span></div><div class="pc-footer"><span class="pc-price">1800 دج</span><button class="pc-btn" onclick="addToCart('غسيل الملابس متعدد الأزهار 10 لتر',1800)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv d2" data-c="laundry" data-n="ميغا فلورال 10 لتر" data-p="1950">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/dDPJrHf3/MEGA-BL-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">ميغا فلورال </div><p class="pc-desc">تركيبة Clean Wash الفريدة برائحة زهرية ناعمة. عطر يلتفّ حول ملابسك ويبقى معك.</p><div class="pc-badges"><span class="badge">🌺 زهري</span><span class="badge">10 لتر</span></div><div class="pc-footer"><span class="pc-price">1950 دج</span><button class="pc-btn" onclick="selProd('ميغا فلورال 10 لتر',1950)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/dDPJrHf3/MEGA-BL-PNG.png" alt="ميغا فلورال"></div>
+        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">ميغا فلورال</div><p class="pc-desc">تركيبة Clean Wash الفريدة برائحة زهرية ناعمة. عطر يلتفّ حول ملابسك ويبقى معك.</p><div class="pc-badges"><span class="badge">🌺 زهري</span><span class="badge">10 لتر</span></div><div class="pc-footer"><span class="pc-price">1950 دج</span><button class="pc-btn" onclick="addToCart('ميغا فلورال 10 لتر',1950)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv d1" data-c="laundry" data-n="بارفان ليشيا 10 لتر" data-p="1750">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/YS3jkHsf/MEGA-BLEU-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">بارفان ليشيا</div><p class="pc-desc">عطر منعش وخفيف كنسيم الصباح. مثالي للعائلة والاستعمال اليومي مع نظافة فائقة.</p><div class="pc-badges"><span class="badge">💙 ليشيا</span><span class="badge">10 لتر</span></div><div class="pc-footer"><span class="pc-price">1750 دج</span><button class="pc-btn" onclick="selProd('بارفان ليشيا 10 لتر',1750)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/YS3jkHsf/MEGA-BLEU-PNG.png" alt="بارفان ليشيا"></div>
+        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">بارفان ليشيا</div><p class="pc-desc">عطر منعش وخفيف كنسيم الصباح. مثالي للعائلة والاستعمال اليومي مع نظافة فائقة.</p><div class="pc-badges"><span class="badge">💙 ليشيا</span><span class="badge">10 لتر</span></div><div class="pc-footer"><span class="pc-price">1750 دج</span><button class="pc-btn" onclick="addToCart('بارفان ليشيا 10 لتر',1750)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv d2" data-c="laundry" data-n="متعدد الأزهار 10 لتر" data-p="1850">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/rpPX5Z0k/MOOV-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">متعدد الأزهار</div><p class="pc-desc">باقة أزهار متنوعة تمنح ملابسك نعومة استثنائية وعطراً زهرياً يفيض من الدولاب.</p><div class="pc-badges"><span class="badge">🌸 أزهار</span><span class="badge">10 لتر</span></div><div class="pc-footer"><span class="pc-price">1850 دج</span><button class="pc-btn" onclick="selProd('متعدد الأزهار 10 لتر',1850)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/rpPX5Z0k/MOOV-PNG.png" alt="متعدد الأزهار"></div>
+        <div class="pc-body"><span class="pc-cat cat-l">👕 ملابس</span><div class="pc-title">متعدد الأزهار</div><p class="pc-desc">باقة أزهار متنوعة تمنح ملابسك نعومة استثنائية وعطراً زهرياً يفيض من الدولاب.</p><div class="pc-badges"><span class="badge">🌸 أزهار</span><span class="badge">10 لتر</span></div><div class="pc-footer"><span class="pc-price">1850 دج</span><button class="pc-btn" onclick="addToCart('متعدد الأزهار 10 لتر',1850)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv" data-c="bleach" data-n="ماء جافيل ميغا كلين 5 لتر" data-p="1250">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/258rQB00/JAVEL-BIG-PNG.png=""></div>
-        <div class="pc-body"><span class="pc-cat cat-b">🧴 تعقيم</span><div class="pc-title">ماء جافيل ميغا كلين</div><p class="pc-desc">تعقيم أعلى من 99.9% بتركيبة Ultra Efficace 12°. يبيّض الأقمشة ويعقّم الأسطح في لحظة.</p><div class="pc-badges"><span class="badge">5 لتر</span><span class="badge">12°</span><span class="badge">Ultra</span></div><div class="pc-footer"><span class="pc-price">1250 دج</span><button class="pc-btn" onclick="selProd('ماء جافيل ميغا كلين 5 لتر',1250)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/258rQB00/JAVEL-BIG-PNG.png" alt="ماء جافيل"></div>
+        <div class="pc-body"><span class="pc-cat cat-b">🧴 تعقيم</span><div class="pc-title">ماء جافيل ميغا كلين</div><p class="pc-desc">تعقيم أعلى من 99.9% بتركيبة Ultra Efficace 12°. يبيّض الأقمشة ويعقّم الأسطح في لحظة.</p><div class="pc-badges"><span class="badge">5 لتر</span><span class="badge">12°</span><span class="badge">Ultra</span></div><div class="pc-footer"><span class="pc-price">1250 دج</span><button class="pc-btn" onclick="addToCart('ماء جافيل ميغا كلين 5 لتر',1250)">🛒 أضف للسلة</button></div></div>
       </div>
 
       <div class="pc rv d1" data-c="bleach" data-n="ماء جافيل كلاسيك 2 لتر" data-p="1100">
-        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/sDvWcvNd/JAVEL-PNG.png" alt=""></div>
-        <div class="pc-body"><span class="pc-cat cat-b">🧴 تعقيم</span><div class="pc-title">ماء جافيل كلاسيك</div><p class="pc-desc">الكلاسيكي الذي لا يُستغنى عنه. للتعقيم والتبييض وتنظيف الأسطح في كل أرجاء البيت.</p><div class="pc-badges"><span class="badge">2 لتر</span><span class="badge">كلاسيك</span></div><div class="pc-footer"><span class="pc-price">1100 دج</span><button class="pc-btn" onclick="selProd('ماء جافيل كلاسيك 2 لتر',1100)">اطلب الآن</button></div></div>
+        <div class="pc-img-wrap"><div class="pc-shine"></div><div class="pc-glow"></div><img class="pc-img" src="https://i.postimg.cc/sDvWcvNd/JAVEL-PNG.png" alt="ماء جافيل كلاسيك"></div>
+        <div class="pc-body"><span class="pc-cat cat-b">🧴 تعقيم</span><div class="pc-title">ماء جافيل كلاسيك</div><p class="pc-desc">الكلاسيكي الذي لا يُستغنى عنه. للتعقيم والتبييض وتنظيف الأسطح في كل أرجاء البيت.</p><div class="pc-badges"><span class="badge">2 لتر</span><span class="badge">كلاسيك</span></div><div class="pc-footer"><span class="pc-price">1100 دج</span><button class="pc-btn" onclick="addToCart('ماء جافيل كلاسيك 2 لتر',1100)">🛒 أضف للسلة</button></div></div>
       </div>
 
     </div>
@@ -458,16 +838,16 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
     <div class="about-grid">
       <div class="rv">
         <div class="about-visual">
-          <img class="about-img" src="https://i.postimg.cc/FzkXN4mv/LOGO-PNG.png" alt="مدير ميغا كلين">
+          <img class="about-img" src="https://i.postimg.cc/FzkXN4mv/LOGO-PNG.png" alt="ميغا كلين">
           <div class="about-over"><div class="n">10+</div><div class="l">سنوات خبرة</div></div>
         </div>
       </div>
       <div class="rv d1">
         <span class="about-tag">💬 قصتنا</span>
         <h2 class="about-title">شغف بالنظافة،<br>التزام بالجودة</h2>
-        <p class="about-lead">ميغا كلين علامة جزائرية رائدة نؤمن أن كل أسرة تستحق نظافة حقيقية بأسعار معقولة وتركيبات آمنة. مصنعنا بالقرارة على مساحة 5000 متر مربع بأحدث المعدات .</p>
+        <p class="about-lead">ميغا كلين علامة جزائرية رائدة نؤمن أن كل أسرة تستحق نظافة حقيقية بأسعار معقولة وتركيبات آمنة. مصنعنا بالقرارة على مساحة 5000 متر مربع بأحدث المعدات.</p>
         <ul class="about-list">
-          <li>مصنع 5000m² بأحدث خطوط الإنتاج </li>
+          <li>مصنع 5000m² بأحدث خطوط الإنتاج</li>
           <li>فريق متخصص ومتكامل</li>
           <li>شبكة توزيع تغطي كامل ولايات الجزائر</li>
           <li>معايير ISO للجودة في كل مرحلة من مراحل الإنتاج</li>
@@ -508,7 +888,7 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
     <h2 class="cta-title rv">هل تبحث عن حلول<br>تنظيف احترافية؟</h2>
     <p class="cta-lead rv d1">ميغا كلين شريكك في الجودة والنظافة والانتعاش اليومي. تواصل معنا للطلبات بالجملة والشراكات التجارية — خصم 20% على طلبك الأول.</p>
     <div class="cta-btns rv d2">
-      <button class="btn btn-t" onclick="openD()" style="padding:14px 36px">اطلب الآن</button>
+      <button class="btn btn-t" onclick="openCart()" style="padding:14px 36px">🛒 عرض السلة</button>
       <a href="https://wa.me/213560865212" target="_blank" class="btn btn-wa">💬 واتساب</a>
       <a href="mailto:megaclean47@gmail.com" class="btn btn-ghost">طلب عرض سعر</a>
     </div>
@@ -535,10 +915,55 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
   <div class="fb"><p>© 2026 ميغا كلين — صنع في الجزائر 🇩🇿 بكل فخر</p><p>جميع الحقوق محفوظة</p></div>
 </footer>
 
-<!-- WA FLOAT -->
+<!-- زر الواتساب العائم -->
 <a href="https://wa.me/213560865212" target="_blank" class="wa-fab" id="wafab" title="واتساب">💬</a>
 
-<!-- OVERLAY + DRAWER -->
+<!-- ==================== زر السلة العائم ==================== -->
+<!-- يظهر فوق زر الواتساب عند التمرير لأسفل -->
+<button class="cart-fab" id="cartFab" onclick="openCart()" aria-label="فتح سلة المشتريات">
+  🛒
+  <span class="cart-fab__badge" id="cartBadge" aria-live="polite">0</span>
+</button>
+
+<!-- ==================== طبقة التعتيم ==================== -->
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- ==================== نافذة السلة المنبثقة ==================== -->
+<div class="cart-modal" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle">
+  <!-- مقبض Drag للإشارة إمكانية الإغلاق -->
+  <div class="cart-modal__handle"></div>
+
+  <!-- رأس النافذة -->
+  <div class="cart-modal__header">
+    <h2 class="cart-modal__title" id="cartModalTitle">🛒 سلة مشترياتك</h2>
+    <button class="cart-modal__close" id="cartClose" aria-label="إغلاق السلة">✕</button>
+  </div>
+
+  <!-- قائمة المنتجات — تُملأ ديناميكياً -->
+  <div class="cart-modal__body" id="cartBody"></div>
+
+  <!-- التذييل: المجموع + زر إتمام الطلب -->
+  <div class="cart-modal__footer">
+    <div class="cart-modal__total">
+          <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <input type="text" id="cust-name" placeholder="الاسم الكامل" class="fc" style="margin-bottom: 10px;">
+    <input type="text" id="cust-phone" placeholder="رقم الهاتف" class="fc" style="margin-bottom: 10px;">
+    <input type="text" id="cust-loc" placeholder="الولاية / البلدية" class="fc" style="margin-bottom: 10px;">
+    <input type="text" id="cust-hood" placeholder="الحي / العنوان" class="fc">
+      <span class="cart-modal__total-label">المجموع الإجمالي</span>
+      <span class="cart-modal__total-amount" id="cartTotal">0 دج</span>
+    </div>
+    <button class="cart-modal__checkout btn-wa" id="cartCheckout" disabled>
+      💬 إتمام الطلب عبر واتساب
+    </button>
+</div>
+  </div>
+</div>
+
+<!-- ==================== حاوية الإشعارات (Toasts) ==================== -->
+<div class="cart-toasts" id="cartToasts" aria-live="assertive" aria-atomic="true"></div>
+
+<!-- ==================== OVERLAY + DRAWER (الطلب السريع) ==================== -->
 <div class="ov" id="ov" onclick="closeD()"></div>
 <div class="drawer" id="dr">
   <div class="dh">
@@ -557,6 +982,10 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
 </div>
 
 <script>
+/* ================================================================
+   ==================== JAVASCRIPT الكامل ====================
+   ================================================================ */
+
 // ===== CURSOR =====
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
@@ -576,23 +1005,17 @@ document.querySelectorAll('a,button,.pc,.ftab').forEach(el=>{
   const cols=['rgba(29,219,184,.08)','rgba(10,109,201,.06)','rgba(29,219,184,.04)','rgba(0,200,160,.05)'];
   function draw(){
     ctx.clearRect(0,0,W,H);
-    // Background
     const bg=ctx.createLinearGradient(0,0,W,H);
     bg.addColorStop(0,'#030E1C');bg.addColorStop(.4,'#071628');bg.addColorStop(.7,'#082825');bg.addColorStop(1,'#071628');
     ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    // Flowing waves
     for(let i=0;i<6;i++){
       ctx.beginPath();
       const freq=.003+i*.0008;const amp=H*.08+i*20;const phase=t*(0.4+i*.08)+i*Math.PI*.4;
       ctx.moveTo(0,H*.3+i*H*.06);
-      for(let x=0;x<=W;x+=8){
-        const y=H*.3+i*H*.06+Math.sin(x*freq+phase)*amp+Math.cos(x*freq*.5+phase*.7)*amp*.5;
-        ctx.lineTo(x,y);
-      }
+      for(let x=0;x<=W;x+=8){const y=H*.3+i*H*.06+Math.sin(x*freq+phase)*amp+Math.cos(x*freq*.5+phase*.7)*amp*.5;ctx.lineTo(x,y);}
       ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();
       ctx.fillStyle=cols[i%cols.length];ctx.fill();
     }
-    // Radial glows
     [{x:.2,y:.3,r:.5,c:'rgba(29,219,184,.06)'},{x:.8,y:.7,r:.4,c:'rgba(10,109,201,.05)'},{x:.5,y:.5,r:.35,c:'rgba(29,219,184,.03)'}]
     .forEach(g=>{
       const grd=ctx.createRadialGradient(W*g.x,H*g.y,0,W*g.x,H*g.y,W*g.r);
@@ -611,25 +1034,17 @@ document.querySelectorAll('a,button,.pc,.ftab').forEach(el=>{
   function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;}
   resize();window.addEventListener('resize',resize);
   const bubbles=[];
-  for(let i=0;i<55;i++)bubbles.push({
-    x:Math.random()*1400,y:Math.random()*700+100,r:Math.random()*22+4,
-    vx:(Math.random()-.5)*.3,vy:-(Math.random()*.5+.15),
-    op:Math.random()*.35+.05,pop:Math.random()*.005+.001,t:Math.random()*Math.PI*2
-  });
+  for(let i=0;i<55;i++)bubbles.push({x:Math.random()*1400,y:Math.random()*700+100,r:Math.random()*22+4,vx:(Math.random()-.5)*.3,vy:-(Math.random()*.5+.15),op:Math.random()*.35+.05,pop:Math.random()*.005+.001,t:Math.random()*Math.PI*2});
   function draw(){
     ctx.clearRect(0,0,W,H);
     bubbles.forEach(b=>{
       b.t+=b.pop;const op=b.op*(0.6+0.4*Math.sin(b.t));
       ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
       const g=ctx.createRadialGradient(b.x-b.r*.3,b.y-b.r*.3,0,b.x,b.y,b.r);
-      g.addColorStop(0,`rgba(255,255,255,${op*.5})`);
-      g.addColorStop(.5,`rgba(29,219,184,${op*.2})`);
-      g.addColorStop(1,`rgba(29,219,184,${op*.05})`);
+      g.addColorStop(0,`rgba(255,255,255,${op*.5})`);g.addColorStop(.5,`rgba(29,219,184,${op*.2})`);g.addColorStop(1,`rgba(29,219,184,${op*.05})`);
       ctx.fillStyle=g;ctx.fill();
       ctx.strokeStyle=`rgba(29,219,184,${op*.4})`;ctx.lineWidth=.8;ctx.stroke();
-      // Inner shimmer
-      ctx.beginPath();ctx.arc(b.x-b.r*.25,b.y-b.r*.3,b.r*.2,0,Math.PI*2);
-      ctx.fillStyle=`rgba(255,255,255,${op*.4})`;ctx.fill();
+      ctx.beginPath();ctx.arc(b.x-b.r*.25,b.y-b.r*.3,b.r*.2,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${op*.4})`;ctx.fill();
       b.x+=b.vx;b.y+=b.vy;
       if(b.y<-40){b.y=H+20;b.x=Math.random()*W;}
       if(b.x<-40||b.x>W+40){b.x=Math.random()*W;b.y=H+20;}
@@ -637,7 +1052,6 @@ document.querySelectorAll('a,button,.pc,.ftab').forEach(el=>{
     requestAnimationFrame(draw);
   }
   draw();
-  // Cursor parallax
   document.addEventListener('mousemove',e=>{
     const cx=e.clientX/window.innerWidth-.5,cy=e.clientY/window.innerHeight-.5;
     bubbles.forEach((b,i)=>{const s=(i%4+1)*.4;b.x+=cx*s;b.y+=cy*s;});
@@ -666,16 +1080,18 @@ document.querySelectorAll('a,button,.pc,.ftab').forEach(el=>{
   draw();
 })();
 
-// ===== SCROLL =====
+// ===== SCROLL — شريط التقدم + Navbar + FABs =====
 const nav=document.getElementById('nav'),prog=document.getElementById('prog'),wafab=document.getElementById('wafab');
 window.addEventListener('scroll',()=>{
   const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
   prog.style.width=(s/h*100)+'%';
   nav.classList.toggle('s',s>60);
   wafab.classList.toggle('show',s>400);
+  // إظهار زر السلة عند التمرير
+  cartFab.classList.toggle('cart-fab--visible',s>400);
 });
 
-// ===== REVEAL =====
+// ===== REVEAL بالتمرير =====
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.07,rootMargin:'0px 0px -20px 0px'});
 document.querySelectorAll('.rv').forEach(r=>obs.observe(r));
 
@@ -714,12 +1130,12 @@ document.querySelectorAll('.btn').forEach(btn=>{
   });
 });
 
-// ===== PRODUCTS =====
+// ===== قائمة المنتجات للـ Drawer =====
 const prods=[
   {n:"باور واش ليمون 630مل",p:450},{n:"باور واش تفاح أخضر",p:450},
   {n:"دوري نيت ليمون 5 لتر",p:1200},{n:"سائل أواني برتقال 1 لتر",p:350},
   {n:"غسيل ملابس عطر فلورال 5 لتر",p:1400},{n:"صابون مرسيليا 10 لتر",p:2200},
-  {n:"لافندر 10 لتر",p:1800},{n:"ميغا فلورال 10 لتر",p:1950},
+  {n:"غسيل الملابس متعدد الأزهار 10 لتر",p:1800},{n:"ميغا فلورال 10 لتر",p:1950},
   {n:"بارفان ليشيا 10 لتر",p:1750},{n:"متعدد الأزهار 10 لتر",p:1850},
   {n:"ماء جافيل ميغا كلين 5 لتر",p:1250},{n:"ماء جافيل كلاسيك 2 لتر",p:1100}
 ];
@@ -746,13 +1162,283 @@ function sendOrd(){
 }
 window.sendOrd=sendOrd;
 
-// Click product card to open drawer
-document.querySelectorAll('.pc').forEach(c=>{
-  c.addEventListener('click',e=>{
-    if(e.target.classList.contains('pc-btn'))return;
-    const n=c.dataset.n,p=c.dataset.p;if(n&&p)selProd(n,parseInt(p));
-  });
+
+/* ================================================================
+   ==================== نظام سلة المشتريات ====================
+   ================================================================ */
+
+/* --------- مراجع عناصر الـ DOM --------- */
+const cartFab      = document.getElementById('cartFab');
+const cartBadge    = document.getElementById('cartBadge');
+const cartOverlay  = document.getElementById('cartOverlay');
+const cartModal    = document.getElementById('cartModal');
+const cartBody     = document.getElementById('cartBody');
+const cartTotal    = document.getElementById('cartTotal');
+const cartCheckout = document.getElementById('cartCheckout');
+const cartToasts   = document.getElementById('cartToasts');
+const cartClose    = document.getElementById('cartClose');
+
+/* --------- الحالة المركزية للسلة --------- */
+// كائن يحتوي على بيانات السلة وخصائص محسوبة
+const cartState = {
+  items: [],       // مصفوفة المنتجات: [{id, name, price, quantity}]
+  isOpen: false,   // حالة فتح/إغلاق النافذة
+
+  // إجمالي عدد العناصر (getter محسوب)
+  get totalQty() {
+    return this.items.reduce((sum, item) => sum + item.quantity, 0);
+  },
+
+  // إجمالي السعر (getter محسوب)
+  get totalPrice() {
+    return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+};
+
+/* --------- تحديث شارة العدد على الزر العائم --------- */
+// تُستدعى بعد كل تعديل على السلة
+const updateCartBadge = () => {
+  const qty = cartState.totalQty;
+  cartBadge.textContent = qty;
+  // تأثير قفز القيمة لفت انتباه المستخدم
+  cartBadge.classList.remove('cart-fab__badge--bump');
+  void cartBadge.offsetWidth; // إجبار المتصفح على إعادة الـ Reflow لإعادة تشغيل الـ Animation
+  cartBadge.classList.add('cart-fab__badge--bump');
+};
+
+/* --------- فتح نافذة السلة --------- */
+const openCart = () => {
+  cartState.isOpen = true;
+  renderCartItems(); // تحديث العرض قبل الفتح
+  cartModal.classList.add('cart-modal--open');
+  cartOverlay.classList.add('cart-overlay--visible');
+  document.body.style.overflow = 'hidden'; // منع تمرير الصفحة خلف النافذة
+  cartClose.focus(); // إمكانية الوصول: تركيز لوحة المفاتيح
+};
+window.openCart = openCart;
+
+/* --------- إغلاق نافذة السلة --------- */
+const closeCart = () => {
+  cartState.isOpen = false;
+  cartModal.classList.remove('cart-modal--open');
+  cartOverlay.classList.remove('cart-overlay--visible');
+  document.body.style.overflow = ''; // استعادة التمرير
+};
+
+/* --------- عرض محتوى السلة في الـ DOM --------- */
+// تُعيد رسم قائمة المنتجات والإجمالي في كل مرة
+const renderCartItems = () => {
+  // تحديث رقم الإجمالي بتنسيق عربي
+  cartTotal.textContent = `${cartState.totalPrice.toLocaleString('ar-DZ')} دج`;
+
+  // تفعيل أو تعطيل زر الطلب حسب حالة السلة
+  cartCheckout.disabled = cartState.items.length === 0;
+
+  // --- حالة السلة الفارغة (Empty State) ---
+  if (cartState.items.length === 0) {
+    cartBody.innerHTML = `
+      <div class="cart-modal__empty">
+        <span class="cart-modal__empty-icon">🛒</span>
+        <p class="cart-modal__empty-text">سلتك فارغة حالياً</p>
+        <p class="cart-modal__empty-sub">اختر منتجاتك المفضلة من ميغا كلين وأضفها للسلة</p>
+      </div>
+    `;
+    return;
+  }
+
+  // --- بناء HTML لكل عنصر باستخدام Template Literals ---
+  cartBody.innerHTML = cartState.items.map(({ id, name, price, quantity }) => {
+    const subtotal = (price * quantity).toLocaleString('ar-DZ');
+    return `
+      <div class="cart-modal__item" data-id="${id}">
+        <div class="cart-modal__item-name">${name}</div>
+        <div class="cart-modal__item-controls">
+          <button class="cart-modal__btn cart-modal__btn--remove"
+                  onclick="removeFromCart('${id}')"
+                  title="حذف المنتج">🗑</button>
+          <button class="cart-modal__btn"
+                  onclick="decrementItem('${id}')"
+                  aria-label="تقليل الكمية">−</button>
+          <span class="cart-modal__item-qty">${quantity}</span>
+          <button class="cart-modal__btn"
+                  onclick="incrementItem('${id}')"
+                  aria-label="زيادة الكمية">+</button>
+        </div>
+        <span class="cart-modal__item-subtotal">${subtotal} دج</span>
+      </div>
+    `;
+  }).join('');
+};
+
+/* --------- إشعار التأكيد (Toast Notification) --------- */
+// يظهر رسالة لثانيتين ثم يختفي بسلاسة
+const showToast = (message) => {
+  const toast = document.createElement('div');
+  toast.className = 'cart-toast';
+  toast.textContent = message;
+  cartToasts.appendChild(toast);
+
+  // جدولة الإخفاء بعد 2 ثانية
+  setTimeout(() => {
+    toast.classList.add('cart-toast--out');
+    // حذف العنصر من الـ DOM بعد انتهاء الـ Animation
+    toast.addEventListener('animationend', () => toast.remove(), { once: true });
+  }, 2000);
+};
+
+/* ================================================================
+   --------- دوال إدارة السلة الرئيسية ---------
+   ================================================================ */
+
+/**
+ * addToCart: إضافة منتج للسلة أو زيادة كميته إن كان موجوداً مسبقاً
+ * تمنع التكرار في المصفوفة وتزيد الـ quantity بدلاً من ذلك
+ * @param {string} name  — اسم المنتج كما يظهر في البطاقة
+ * @param {number} price — سعر الوحدة بالدينار الجزائري
+ */
+const addToCart = (name, price) => {
+  // توليد ID فريد من الاسم (إزالة المسافات)
+  const id = name.replace(/\s+/g, '-');
+
+  // البحث عن المنتج في السلة — منع التكرار
+  const existingItem = cartState.items.find(item => item.id === id);
+
+  if (existingItem) {
+    // المنتج موجود — زيادة الكمية فقط
+    existingItem.quantity += 1;
+    showToast(`✅ تمت زيادة كمية "${name}"`);
+  } else {
+    // منتج جديد — إضافة للمصفوفة
+    cartState.items.push({ id, name, price, quantity: 1 });
+    showToast(`🛒 أُضيف "${name}" للسلة`);
+  }
+
+  // تحديث الشارة وإعادة الرسم إن كانت النافذة مفتوحة
+  updateCartBadge();
+  if (cartState.isOpen) renderCartItems();
+};
+window.addToCart = addToCart;
+
+/**
+ * removeFromCart: حذف منتج بالكامل من السلة بمعرفه
+ * @param {string} id — المعرف الفريد للمنتج
+ */
+const removeFromCart = (id) => {
+  // استخراج اسم المنتج قبل الحذف للإشعار
+  const itemName = cartState.items.find(i => i.id === id)?.name ?? '';
+  // تصفية المصفوفة لاستبعاد المنتج المحذوف (Immutable filter)
+  cartState.items = cartState.items.filter(item => item.id !== id);
+  showToast(`🗑 تمت إزالة "${itemName}"`);
+  updateCartBadge();
+  renderCartItems();
+};
+window.removeFromCart = removeFromCart;
+
+/**
+ * incrementItem: زيادة كمية منتج بمقدار 1
+ * @param {string} id — المعرف الفريد للمنتج
+ */
+const incrementItem = (id) => {
+  const item = cartState.items.find(i => i.id === id);
+  if (item) {
+    item.quantity += 1;
+    updateCartBadge();
+    renderCartItems();
+  }
+};
+window.incrementItem = incrementItem;
+
+/**
+ * decrementItem: تقليل كمية منتج بمقدار 1 أو حذفه إن وصلت للصفر
+ * @param {string} id — المعرف الفريد للمنتج
+ */
+const decrementItem = (id) => {
+  const item = cartState.items.find(i => i.id === id);
+  if (!item) return;
+
+  if (item.quantity <= 1) {
+    // الكمية وصلت للحد الأدنى — حذف المنتج كلياً
+    removeFromCart(id);
+  } else {
+    item.quantity -= 1;
+    updateCartBadge();
+    renderCartItems();
+  }
+};
+window.decrementItem = decrementItem;
+
+/* --------- إتمام الطلب عبر واتساب --------- */
+// يبني رسالة منسقة ويفتح واتساب برابط مُشفر
+const checkoutViaWhatsApp = () => {
+  // 1. Edge Case: سلة فارغة
+  if (cartState.items.length === 0) {
+    showToast('⚠️ سلتك فارغة! أضف منتجاً أولاً');
+    return;
+  }
+
+  // 2. جلب بيانات الزبون من الحقول التي أضفناها
+  const name = document.getElementById('cust-name').value;
+  const phone = document.getElementById('cust-phone').value;
+  const loc = document.getElementById('cust-loc').value;
+  const hood = document.getElementById('cust-hood').value;
+
+  // 3. التحقق من ملء البيانات
+  if (!name || !phone || !loc || !hood) {
+    showToast('⚠️ يرجى ملء بيانات الزبون أولاً!');
+    return;
+  }
+
+  // 4. بناء سطور تفصيل المنتجات
+  const itemLines = cartState.items
+    .map(({ name, price, quantity }) => {
+      const subtotal = (price * quantity).toLocaleString('ar-DZ');
+      return `• ${name} (الكمية: ${quantity}) = ${subtotal} دج`;
+    })
+    .join('\n');
+
+  // 5. تجميع نص الرسالة الكاملة
+  const message = [
+    '*🧼 طلب جديد من ميغا كلين:*',
+    '',
+    '*👤 بيانات الزبون:*',
+    `الاسم: ${name}`,
+    `الهاتف: ${phone}`,
+    `الموقع: ${loc}`,
+    `الحي: ${hood}`,
+    '',
+    '*📦 المنتجات:*',
+    itemLines,
+    '',
+    `*💰 المجموع الإجمالي: ${cartState.totalPrice.toLocaleString('ar-DZ')} دج*`
+  ].join('\n');
+
+  // 6. فتح رابط الواتساب (استبدل الرقم برقمك الحقيقي)
+  const whatsappUrl = `https://wa.me/213560865212?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, '_blank');
+};
+
+/* --------- ربط أحداث السلة --------- */
+
+// فتح السلة بزر الـ FAB
+cartFab.addEventListener('click', openCart);
+
+// إغلاق السلة بزر X
+cartClose.addEventListener('click', closeCart);
+
+// إغلاق السلة بالضغط على الطبقة الخلفية
+cartOverlay.addEventListener('click', closeCart);
+
+// إغلاق السلة بمفتاح Escape (إمكانية الوصول)
+document.addEventListener('keydown', ({ key }) => {
+  if (key === 'Escape' && cartState.isOpen) closeCart();
 });
+
+// زر إتمام الطلب
+cartCheckout.addEventListener('click', checkoutViaWhatsApp);
+
+/* --------- تهيئة أولية --------- */
+updateCartBadge();
+renderCartItems();
 </script>
 </body>
 </html>
