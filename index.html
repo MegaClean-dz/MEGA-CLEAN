@@ -35,7 +35,7 @@ body:hover #cursor{opacity:1}
 #prog{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--t),var(--b),var(--t));z-index:10000;width:0%;transition:width .06s linear;box-shadow:0 0 8px var(--t)}
 
 /* ==================== NAVBAR ==================== */
-nav{position:fixed;top:0;inset-inline:0;z-index:800;padding:22px 0;transition:.5s var(--ease)}
+nav{position:absolute;top:0;inset-inline:0;z-index:800;padding:22px 0;transition:.5s var(--ease)}
 nav.s{background:rgba(3,14,28,.85);backdrop-filter:blur(24px) saturate(1.8);padding:14px 0;border-bottom:1px solid rgba(29,219,184,.08)}
 .nc{max-width:1380px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:32px}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
@@ -162,7 +162,7 @@ nav.s{background:rgba(3,14,28,.85);backdrop-filter:blur(24px) saturate(1.8);padd
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
 @media(max-width:800px){.about-grid{grid-template-columns:1fr}}
 .about-visual{position:relative}
-.about-img{width:100%;border-radius:32px;display:block;filter:brightness(.85) contrast(1.1);object-fit:cover;height:500px}
+.about-img{width:100%;border-radius:32px;display:block;filter:brightness(.85) contrast(1.1);object-fit:contain;height:500px}
 .about-over{position:absolute;bottom:-24px;right:-24px;background:rgba(3,14,28,.9);backdrop-filter:blur(20px);border:1px solid rgba(29,219,184,.15);border-radius:20px;padding:20px 24px;text-align:center}
 .about-over .n{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--t),#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .about-over .l{font-size:.75rem;color:rgba(255,255,255,.45);font-weight:600}
@@ -838,7 +838,7 @@ footer h4{font-size:.88rem;font-weight:800;color:rgba(255,255,255,.7);margin-bot
     <div class="about-grid">
       <div class="rv">
         <div class="about-visual">
-          <img class="about-img" src="https://i.postimg.cc/FzkXN4mv/LOGO-PNG.png" alt="ميغا كلين">
+          <img class="about-img" src="https://i.postimg.cc/SjFHZfN0/Whisk-Creation-1.jpg" alt="ميغا كلين">
           <div class="about-over"><div class="n">10+</div><div class="l">سنوات خبرة</div></div>
         </div>
       </div>
